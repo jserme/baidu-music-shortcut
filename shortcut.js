@@ -2,73 +2,73 @@ var lastEl;
 var activeCls = 'ui-reelList-shortcut-active';
 
 function getCurActive() {
-	return document.querySelectorAll('.ui-reelList-active')[0];
+    return document.querySelectorAll('.ui-reelList-active')[0];
 }
 
 function addClass(el, cls) {
-	el.className += ' ' + cls;
+    el.className += ' ' + cls;
 }
 
 function delClass(el, cls) {
-	var oldCls = el.className;
-	if (oldCls.indexOf(cls) != - 1) {
-		el.className = oldCls.replace(new RegExp('\\s*' + cls + '\\s*', 'g'), '');
-	}
+    var oldCls = el.className;
+    if (oldCls.indexOf(cls) != -1) {
+        el.className = oldCls.replace(new RegExp('\\s*' + cls + '\\s*', 'g'), '');
+    }
 }
 
 function getId(el) {
-	return $(el).attr('reellist-row')
+    return $(el).attr('reellist-row');
 }
 
 function move(dir) {
-	if (!lastEl) {
-		lastEl = getCurActive();
-	}
+    if (!lastEl) {
+        lastEl = getCurActive();
+    }
 
-	var oldEl = lastEl;
-	var oldId = getId(oldEl);
+    var oldEl = lastEl;
+    var oldId = getId(oldEl);
     var total = +$('.amount .amount').text();
 
-	//尝试用索引去找
-	if (dir == 'next') {
-		oldId++;
-	} else {
-		oldId--;
-	}
+    //尝试用索引去找
+    if (dir == 'next') {
+        oldId++;
+    } else {
+        oldId--;
+    }
 
-    if( oldId < 0 || oldId == total ) {
+    if (oldId < 0 || oldId == total) {
         return false;
     }
 
-	lastEl = $('div[reellist-row="' + oldId + '"]');
+    lastEl = $('div[reellist-row="' + oldId + '"]');
 
-	if (!lastEl) {
-		lastEl = oldEl;
-		return false;
-	}
+    if (!lastEl) {
+        lastEl = oldEl;
+        return false;
+    }
 
-	$(oldEl).removeClass(activeCls);
-	$(lastEl).addClass(activeCls);
+    $(oldEl).removeClass(activeCls);
+    $(lastEl).addClass(activeCls);
 
-	//滚动到可视区域内
-	listView.list.reelList('scrollToRow', oldId)
+    //滚动到可视区域内
+    listView.list.reelList('scrollToRow', oldId);
 }
 
 function del() {
-	if (!lastEl) {
-		lastEl = getCurActive();
-	}
+    if (!lastEl) {
+        lastEl = getCurActive();
+    }
 
-	//百度音乐的全局变量, 接收参数为元素上的reellist-row
-	boxCtrl.removeSong(getId(lastEl));
+    //百度音乐的全局变量, 接收参数为元素上的reellist-row
+    boxCtrl.removeSong(getId(lastEl));
 }
 
 function play() {
-	$(lastEl).dblclick();
+    $(lastEl).dblclick();
 }
 
 function help() {
-	var html = '<div class="baidu-music-shortcut">\
+    var html = '<div class="baidu-music-shortcut">\
                     <table width="300">\
                         <tbody>\
                             <tr>\
@@ -127,20 +127,20 @@ function help() {
         </div>\
     ';
 
-	$('body').append(html);
+    $('body').append(html);
 
-	var el = $('.baidu-music-shortcut');
-	var h = el.height();
-	var w = el.width();
+    var el = $('.baidu-music-shortcut');
+    var h = el.height();
+    var w = el.width();
 
-	el.css({
-		left: ($(document).width() - w) / 2,
-		top: document.body.scrollTop + ($(document).height() - h) / 2
-	});
+    el.css({
+        left: ($(document).width() - w) / 2,
+        top: document.body.scrollTop + ($(document).height() - h) / 2
+    });
 
-	$(document).one('click', function() {
-		el.remove();
-	})
+    $(document).one('click', function() {
+        el.remove();
+    });
 }
 
 function star() {
@@ -148,26 +148,25 @@ function star() {
 }
 
 key('j', function() {
-	move('next')
+    move('next');
 });
 
 key('down', function() {
-	move('next')
+    move('next');
 });
 
 key('k', function() {
-	move('previous')
+    move('previous');
 });
 key('up', function() {
-	move('previous')
+    move('previous');
 });
 
 key('o', play);
 key('enter', play);
 
 //key('s', star);
-key('shift+3', del) //#
-key('delete', del)
+key('shift+3', del); //#
+key('delete', del);
 
 key('shift+/', help); //?
-
